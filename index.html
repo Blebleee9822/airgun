@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halifax Airgun Club | The Private Collective Collection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=Montserrat:wght@200;300;400;600&family=Mrs+Saint+Delafield&display=swap');
+
+        :root {
+            --obsidian: #0c0e0d;
+            --obsidian-light: #161817;
+            --gold: #c5a059;
+            --gold-light: #e2c28d;
+            --off-white: #faf9f6;
+            --slate-luxe: #1c1e1d;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--obsidian);
+            color: var(--off-white);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .serif {
+            font-family: 'Bodoni Moda', serif;
+            letter-spacing: -0.02em;
+        }
+
+        .signature {
+            font-family: 'Mrs Saint Delafield', cursive;
+            color: var(--gold);
+        }
+
+        .gold-foil {
+            background: linear-gradient(135deg, #c5a059 0%, #f1d3a1 50%, #c5a059 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--gold);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        /* Loader */
+        #loader {
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Store Styling */
+        .product-card {
+            transition: all 0.4s ease;
+        }
+        .product-card img {
+            transition: transform 0.6s ease;
+        }
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .filter-header {
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            cursor: pointer;
+        }
+
+        /* Input styling for dark theme */
+        input[type="number"], select {
+            background: var(--obsidian-light);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--obsidian); }
+        ::-webkit-scrollbar-thumb { background: var(--gold); }
+
+        .letter-spacing-custom {
+            letter-spacing: 0.5em;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 12vw, 9rem);
+            line-height: 0.9;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Preloader -->
+    <div id="loader" class="fixed inset-0 z-[100] bg-obsidian flex items-center justify-center">
+        <div class="text-center">
+            <span class="serif text-4xl text-white block mb-2 opacity-0 animate-pulse" style="animation-delay: 0.2s; animation-fill-mode: forwards;">HAC</span>
+            <div class="h-[1px] w-12 bg-gold mx-auto"></div>
+            <p class="text-[8px] uppercase tracking-[0.5em] text-gold/60 mt-4 font-bold">Initializing Estate</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 py-8 px-6 md:px-12 transition-all duration-700">
+        <div class="max-w-screen-2xl mx-auto flex justify-between items-center">
+            <div class="flex flex-col">
+                <a href="#" class="serif text-xl md:text-2xl font-bold tracking-tighter text-white uppercase">
+                    HALIFAX <span class="gold-foil italic">ESTATE</span>
+                </a>
+            </div>
+            
+            <div class="hidden lg:flex items-center space-x-12 text-[10px] uppercase tracking-[0.3em] font-bold">
+                <a href="#" class="nav-link text-white/80 hover:text-white">Home</a>
+                <a href="#collection" class="nav-link text-white/80 hover:text-white">Collection</a>
+                <a href="#" class="nav-link text-white/80 hover:text-white">Legacy</a>
+                <div class="flex items-center space-x-6 pl-12 border-l border-white/10">
+                    <button class="hover:text-gold transition text-white/60"><i class="fas fa-search"></i></button>
+                    <button class="hover:text-gold transition text-white/60">Cart (0)</button>
+                    <button onclick="toggleModal()" class="bg-white/5 text-gold px-6 py-2 border border-gold/30 hover:bg-gold hover:text-obsidian transition duration-300">Join</button>
+                </div>
+            </div>
+
+            <button class="lg:hidden text-xl text-white" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars-staggered"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section (Full Height) -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden bg-obsidian">
+        <div class="absolute inset-0 z-0 opacity-20">
+            <img src="https://images.unsplash.com/photo-1595122176412-f01874b29f03?auto=format&fit=crop&q=80&w=1920" class="w-full h-full object-cover" alt="Background Detail">
+        </div>
+        
+        <!-- Scrolling Indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center opacity-40">
+            <div class="h-12 w-[1px] bg-gold mb-4 overflow-hidden">
+                <div class="h-full w-full bg-white animate-bounce origin-top"></div>
+            </div>
+            <span class="text-[7px] uppercase tracking-[0.6em] font-black text-white">Scroll to Explore</span>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10 text-center">
+            <div class="mb-4 overflow-hidden">
+                <span class="signature text-4xl md:text-7xl block reveal mb-2">The Private Collection</span>
+            </div>
+            <h1 class="serif hero-title text-white uppercase tracking-tighter reveal mb-10">
+                ARMORY <span class="gold-foil italic">ARCHIVE</span>
+            </h1>
+            <div class="reveal">
+                <p class="text-[10px] uppercase letter-spacing-custom text-white/50 font-medium">Near Hipperholme, West Yorkshire</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Collection Layout -->
+    <main id="collection" class="max-w-screen-2xl mx-auto px-6 md:px-12 py-24">
+        
+        <!-- Collection Header -->
+        <div class="flex flex-col md:flex-row justify-between items-center py-8 border-y border-white/10 mb-16 reveal">
+            <div class="flex items-center space-x-6 mb-6 md:mb-0">
+                <div class="flex space-x-4 text-white/20">
+                    <button class="hover:text-gold transition"><i class="fas fa-th-large"></i></button>
+                    <button class="hover:text-gold transition"><i class="fas fa-th"></i></button>
+                    <button class="hover:text-gold transition"><i class="fas fa-list"></i></button>
+                </div>
+                <div class="h-4 w-[1px] bg-white/10 mx-2"></div>
+                <span class="text-[10px] uppercase tracking-widest font-bold text-white/40">12 Products In Collection</span>
+            </div>
+            
+            <div class="flex items-center text-[10px] uppercase tracking-widest font-bold text-white/40">
+                <span class="mr-4">Sort By</span>
+                <select class="bg-transparent border-none focus:outline-none text-white font-black cursor-pointer appearance-none">
+                    <option class="bg-obsidian">Featured Selection</option>
+                    <option class="bg-obsidian">Price: Low to High</option>
+                    <option class="bg-obsidian">Price: High to Low</option>
+                    <option class="bg-obsidian">Newest Acquisitions</option>
+                </select>
+                <i class="fas fa-chevron-down ml-2 text-[8px] text-gold"></i>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-16">
+            
+            <!-- Sidebar Filters -->
+            <aside class="lg:col-span-3 reveal">
+                <div class="space-y-12">
+                    <!-- Availability -->
+                    <div class="filter-group">
+                        <div class="filter-header flex justify-between items-center py-3">
+                            <h4 class="text-[11px] uppercase tracking-[0.2em] font-black text-white">Availability</h4>
+                            <i class="fas fa-minus text-[8px] text-gold"></i>
+                        </div>
+                        <div class="py-8 space-y-5">
+                            <label class="flex items-center text-[10px] uppercase tracking-widest text-white/40 cursor-pointer hover:text-gold transition group">
+                                <input type="checkbox" class="mr-4 accent-gold w-3 h-3 bg-transparent border-white/10"> In Stock <span class="ml-auto text-[8px] opacity-30">(8)</span>
+                            </label>
+                            <label class="flex items-center text-[10px] uppercase tracking-widest text-white/40 cursor-pointer hover:text-gold transition group">
+                                <input type="checkbox" class="mr-4 accent-gold w-3 h-3 bg-transparent border-white/10"> Out of Stock <span class="ml-auto text-[8px] opacity-30">(4)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Price Filter -->
+                    <div class="filter-group">
+                        <div class="filter-header flex justify-between items-center py-3">
+                            <h4 class="text-[11px] uppercase tracking-[0.2em] font-black text-white">Price Range</h4>
+                            <i class="fas fa-minus text-[8px] text-gold"></i>
+                        </div>
+                        <div class="py-8">
+                            <div class="flex items-center space-x-3">
+                                <div class="relative w-1/2">
+                                    <span class="absolute left-3 top-3.5 text-[8px] text-gold/50">£</span>
+                                    <input type="number" placeholder="From" class="w-full bg-white/5 border border-white/10 text-[10px] py-3.5 pl-6 focus:outline-none focus:border-gold/50 transition">
+                                </div>
+                                <div class="relative w-1/2">
+                                    <span class="absolute left-3 top-3.5 text-[8px] text-gold/50">£</span>
+                                    <input type="number" placeholder="To" class="w-full bg-white/5 border border-white/10 text-[10px] py-3.5 pl-6 focus:outline-none focus:border-gold/50 transition">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Brands Filter -->
+                    <div class="filter-group">
+                        <div class="filter-header flex justify-between items-center py-3">
+                            <h4 class="text-[11px] uppercase tracking-[0.2em] font-black text-white">Manufacturer</h4>
+                            <i class="fas fa-minus text-[8px] text-gold"></i>
+                        </div>
+                        <div class="py-8 space-y-5">
+                            <label class="flex items-center text-[10px] uppercase tracking-widest text-white/40 hover:text-gold transition cursor-pointer">
+                                <input type="checkbox" class="mr-4 accent-gold w-3 h-3"> FX Airguns
+                            </label>
+                            <label class="flex items-center text-[10px] uppercase tracking-widest text-white/40 hover:text-gold transition cursor-pointer">
+                                <input type="checkbox" class="mr-4 accent-gold w-3 h-3"> Daystate
+                            </label>
+                            <label class="flex items-center text-[10px] uppercase tracking-widest text-white/40 hover:text-gold transition cursor-pointer">
+                                <input type="checkbox" class="mr-4 accent-gold w-3 h-3"> Toros Arms
+                            </label>
+                            <label class="flex items-center text-[10px] uppercase tracking-widest text-white/40 hover:text-gold transition cursor-pointer">
+                                <input type="checkbox" class="mr-4 accent-gold w-3 h-3"> Weihrauch
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Product Grid -->
+            <div class="lg:col-span-9">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-20">
+                    
+                    <!-- Product Item 1 -->
+                    <div class="product-card group reveal">
+                        <div class="aspect-[4/5] bg-white/5 mb-8 flex items-center justify-center p-10 relative overflow-hidden border border-white/5 group-hover:border-gold/30 transition-all duration-700">
+                            <div class="absolute top-0 right-0 bg-gold text-obsidian text-[8px] font-black px-4 py-1.5 uppercase tracking-tighter z-10">Save £200.00</div>
+                            <img src="https://images.unsplash.com/photo-1595590424283-b8f17842773f?q=80&w=600&auto=format&fit=crop" alt="Toros Arms Rifle" class="w-full h-auto brightness-90 group-hover:brightness-110">
+                            <div class="absolute inset-0 bg-gold/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </div>
+                        <div class="text-center">
+                            <span class="text-[9px] uppercase tracking-[0.4em] font-black text-gold/60">Toros Arms</span>
+                            <h3 class="serif text-xl font-bold mt-3 uppercase text-white group-hover:text-gold transition-colors">Copolla TR-15 Bullpup</h3>
+                            <div class="mt-4 text-sm font-semibold">
+                                <span class="text-white">£1,250.00</span>
+                                <span class="text-white/20 line-through ml-4 text-xs font-medium">£1,450.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Item 2 -->
+                    <div class="product-card group reveal" style="transition-delay: 0.1s;">
+                        <div class="aspect-[4/5] bg-white/5 mb-8 flex items-center justify-center p-10 relative overflow-hidden border border-white/5 group-hover:border-gold/30 transition-all duration-700">
+                            <img src="https://images.unsplash.com/photo-1617196034183-421b4917c92d?q=80&w=600&auto=format&fit=crop" alt="Toros Arms Rifle" class="w-full h-auto brightness-90 group-hover:brightness-110">
+                        </div>
+                        <div class="text-center">
+                            <span class="text-[9px] uppercase tracking-[0.4em] font-black text-gold/60">Toros Arms</span>
+                            <h3 class="serif text-xl font-bold mt-3 uppercase text-white group-hover:text-gold transition-colors">Copolla TR-12 Pro S</h3>
+                            <div class="mt-4 text-sm font-semibold text-white">£1,150.00</div>
+                        </div>
+                    </div>
+
+                    <!-- Product Item 3 -->
+                    <div class="product-card group reveal" style="transition-delay: 0.2s;">
+                        <div class="aspect-[4/5] bg-white/5 mb-8 flex items-center justify-center p-10 relative overflow-hidden border border-white/5 group-hover:border-gold/30 transition-all duration-700">
+                            <img src="https://images.unsplash.com/photo-1584061517031-7b0b8c6b7f32?q=80&w=600&auto=format&fit=crop" alt="Toros Arms Rifle" class="w-full h-auto brightness-90 group-hover:brightness-110">
+                        </div>
+                        <div class="text-center">
+                            <span class="text-[9px] uppercase tracking-[0.4em] font-black text-gold/60">Toros Arms</span>
+                            <h3 class="serif text-xl font-bold mt-3 uppercase text-white group-hover:text-gold transition-colors">Copolla T4 Brown</h3>
+                            <div class="mt-4 text-sm font-semibold text-white">£950.00</div>
+                        </div>
+                    </div>
+
+                    <!-- Product Item 4 -->
+                    <div class="product-card group reveal">
+                        <div class="aspect-[4/5] bg-white/5 mb-8 flex items-center justify-center p-10 relative overflow-hidden border border-white/5 group-hover:border-gold/30 transition-all duration-700">
+                            <img src="https://images.unsplash.com/photo-1560419015-7c427e8ae5ba?q=80&w=600&auto=format&fit=crop" alt="FX Airguns Rifle" class="w-full h-auto brightness-90 group-hover:brightness-110">
+                        </div>
+                        <div class="text-center">
+                            <span class="text-[9px] uppercase tracking-[0.4em] font-black text-gold/60">FX Airguns</span>
+                            <h3 class="serif text-xl font-bold mt-3 uppercase text-white group-hover:text-gold transition-colors">Impact M3 Black</h3>
+                            <div class="mt-4 text-sm font-semibold text-white">£1,850.00</div>
+                        </div>
+                    </div>
+
+                    <!-- Product Item 5 -->
+                    <div class="product-card group reveal" style="transition-delay: 0.1s;">
+                        <div class="aspect-[4/5] bg-white/5 mb-8 flex items-center justify-center p-10 relative overflow-hidden border border-white/5 group-hover:border-gold/30 transition-all duration-700">
+                            <div class="absolute top-0 right-0 bg-white/10 text-gold text-[8px] font-black px-4 py-1.5 uppercase tracking-tighter z-10">Waitlist</div>
+                            <img src="https://images.unsplash.com/photo-1602133187081-4874fdbd555c?q=80&w=600&auto=format&fit=crop" alt="Daystate Rifle" class="w-full h-auto brightness-50 group-hover:brightness-75 transition-all">
+                        </div>
+                        <div class="text-center">
+                            <span class="text-[9px] uppercase tracking-[0.4em] font-black text-gold/60">Daystate</span>
+                            <h3 class="serif text-xl font-bold mt-3 uppercase text-white/40 group-hover:text-gold transition-colors">Delta Wolf HP</h3>
+                            <div class="mt-4 text-sm font-semibold text-white/30">£2,450.00</div>
+                        </div>
+                    </div>
+
+                    <!-- Product Item 6 -->
+                    <div class="product-card group reveal" style="transition-delay: 0.2s;">
+                        <div class="aspect-[4/5] bg-white/5 mb-8 flex items-center justify-center p-10 relative overflow-hidden border border-white/5 group-hover:border-gold/30 transition-all duration-700">
+                            <img src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?q=80&w=600&auto=format&fit=crop" alt="Weihrauch Rifle" class="w-full h-auto brightness-90 group-hover:brightness-110">
+                        </div>
+                        <div class="text-center">
+                            <span class="text-[9px] uppercase tracking-[0.4em] font-black text-gold/60">Weihrauch</span>
+                            <h3 class="serif text-xl font-bold mt-3 uppercase text-white group-hover:text-gold transition-colors">HW100 KT Laminate</h3>
+                            <div class="mt-4 text-sm font-semibold text-white">£1,050.00</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-32 flex justify-center space-x-4 reveal">
+                    <button class="w-12 h-12 border border-white/10 text-[10px] font-black bg-gold text-obsidian hover:bg-white hover:text-obsidian transition-all">1</button>
+                    <button class="w-12 h-12 border border-white/10 text-[10px] font-black text-white hover:border-gold hover:text-gold transition-all">2</button>
+                    <button class="w-12 h-12 border border-white/10 text-[10px] font-black text-white hover:border-gold hover:text-gold transition-all"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#080909] text-white pt-32 pb-16 border-t border-white/5">
+        <div class="max-w-screen-2xl mx-auto px-6 md:px-12">
+            <div class="grid lg:grid-cols-12 gap-20 mb-32">
+                <div class="lg:col-span-5">
+                    <div class="serif text-4xl mb-10 uppercase tracking-tighter font-black">HALIFAX <span class="gold-foil">ESTATE.</span></div>
+                    <p class="text-white/20 text-[11px] uppercase tracking-[0.4em] leading-loose max-w-sm">
+                        Setting the global standard for marksmanship, discipline, and the pursuit of technical perfection since 1994. Authorized Dealer.
+                    </p>
+                </div>
+                <div class="lg:col-span-2 lg:col-start-8">
+                    <h5 class="text-gold text-[11px] font-black uppercase tracking-[0.5em] mb-10">Navigation</h5>
+                    <div class="flex flex-col space-y-5 text-[10px] uppercase tracking-[0.3em] text-white/40">
+                        <a href="#" class="hover:text-gold transition-colors">Shop All</a>
+                        <a href="#" class="hover:text-gold transition-colors">Ranges</a>
+                        <a href="#" class="hover:text-gold transition-colors">Support</a>
+                    </div>
+                </div>
+                <div class="lg:col-span-3 lg:col-start-10">
+                    <h5 class="text-gold text-[11px] font-black uppercase tracking-[0.5em] mb-10">Newsletter</h5>
+                    <div class="flex border-b border-white/10 pb-3 mb-8">
+                        <input type="email" placeholder="EMAIL@ESTATE.CO.UK" class="bg-transparent text-[10px] w-full focus:outline-none placeholder:text-white/10 text-white font-bold tracking-widest">
+                        <button class="text-gold hover:translate-x-2 transition-transform"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="flex space-x-8 text-white/20">
+                        <a href="#" class="hover:text-gold transition-colors"><i class="fab fa-instagram text-lg"></i></a>
+                        <a href="#" class="hover:text-gold transition-colors"><i class="fab fa-facebook-f text-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[9px] uppercase tracking-[0.5em] text-white/20">
+                <p>&copy; 2025 Halifax Airgun Club. The Private Collective.</p>
+                <div class="mt-6 md:mt-0 italic opacity-50 font-bold">EST. MCMXCIV</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Logic -->
+    <div id="modal" class="fixed inset-0 z-[100] bg-obsidian/95 backdrop-blur-3xl hidden flex items-center justify-center p-4">
+        <div class="bg-obsidian border border-gold/20 p-16 max-w-lg w-full relative shadow-[0_0_150px_rgba(197,160,89,0.15)]">
+            <button onclick="toggleModal()" class="absolute top-8 right-8 text-white/20 hover:text-gold transition-colors text-3xl focus:outline-none">&times;</button>
+            <h3 class="serif text-4xl mb-2 text-center text-white">Induction</h3>
+            <p class="text-[9px] uppercase tracking-[0.5em] text-gold/60 text-center mb-12 font-black">Request Secure Access</p>
+            <form class="space-y-8">
+                <input type="text" placeholder="FULL LEGAL NAME" class="w-full bg-white/5 border-b border-white/10 py-4 px-3 text-[11px] tracking-widest focus:outline-none focus:border-gold transition-colors text-white font-medium">
+                <input type="email" placeholder="SECURE EMAIL ADDRESS" class="w-full bg-white/5 border-b border-white/10 py-4 px-3 text-[11px] tracking-widest focus:outline-none focus:border-gold transition-colors text-white font-medium">
+                <button type="button" class="w-full bg-gold text-obsidian py-5 text-[12px] font-black tracking-[0.4em] mt-10 hover:bg-white transition-all duration-700 uppercase">Submit Credentials</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Smooth Loader Exit
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.transform = 'translateY(-100%)';
+                reveal();
+            }, 1500);
+        };
+
+        // Scroll Reveal
+        function reveal() {
+            const reveals = document.querySelectorAll(".reveal");
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+
+        // Navbar Scroll Effect
+        window.addEventListener("scroll", function() {
+            const nav = document.getElementById("navbar");
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-obsidian/95', 'backdrop-blur-xl', 'shadow-2xl', 'py-4', 'border-b', 'border-white/5');
+                nav.classList.remove('py-8');
+            } else {
+                nav.classList.remove('bg-obsidian/95', 'backdrop-blur-xl', 'shadow-2xl', 'py-4', 'border-b', 'border-white/5');
+                nav.classList.add('py-8');
+            }
+        });
+
+        function toggleModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function toggleMobileMenu() {
+            const nav = document.querySelector('.lg\\:flex');
+            nav.classList.toggle('hidden');
+            if(!nav.classList.contains('hidden')) {
+                nav.className = "flex flex-col absolute top-full left-0 w-full bg-obsidian/98 backdrop-blur-2xl p-12 space-y-10 lg:hidden border-b border-white/5 shadow-2xl z-40 animate-slideDown";
+            }
+        }
+    </script>
+</body>
+</html>
