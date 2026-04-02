@@ -3,253 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halifax Airgun Club</title>
+    <title>Halifax Airgun Club | Indoor Shooting Range</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Oswald:wght@500;700&display=swap');
         
+        :root {
+            --brand-red: #dc2626;
+            --brand-navy: #0f172a;
+            --brand-green: #15803d;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
-            background-color: #f3f4f6;
+            background-color: #f8fafc;
         }
 
-        .hero-gradient {
-            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
-        }
-
-        .nav-link {
-            transition: all 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: #ef4444;
-        }
-
-        .section-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .highlight-red {
-            color: #dc2626;
-            font-weight: 700;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
+        h1, h2, h3, .nav-brand {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
         }
 
         .tab-content {
             display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease-out;
         }
 
         .tab-content.active {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .tab-btn.active {
-            border-bottom: 3px solid #ef4444;
-            color: #ef4444;
+        .nav-btn {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.active {
+            color: var(--brand-red);
+        }
+
+        .nav-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--brand-red);
+            border-radius: 2px;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Mobile Menu */
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out;
+            max-height: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.open {
+            max-height: 500px;
         }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="text-slate-900">
+
+    <!-- Top Info Bar -->
+    <div class="bg-slate-900 text-white py-2 px-4 text-xs font-semibold tracking-wider hidden md:block">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex gap-6">
+                <span><i class="fas fa-map-marker-alt text-red-500 mr-2"></i>PHOEBE LANE INDUSTRIAL ESTATE, HALIFAX</span>
+                <span><i class="fas fa-phone text-red-500 mr-2"></i>01422 365529</span>
+            </div>
+            <div id="live-status-header">
+                <!-- Loaded via JS -->
+                Calculating status...
+            </div>
+        </div>
+    </div>
 
     <!-- Navigation -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center py-4">
-                <div class="flex items-center space-x-2 mb-4 md:mb-0 cursor-pointer" onclick="showTab('home')">
-                    <div class="w-12 h-12 bg-green-700 rounded-full flex items-center justify-center text-white font-bold text-xs text-center leading-none p-1">
-                        HALIFAX AIRGUN
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-4 cursor-pointer" onclick="showTab('home')">
+                    <!-- Replacement Image Tag for your uploaded SVG -->
+                    <div class="w-16 h-16 flex items-center justify-center">
+                        <img src="Screenshot 2026-03-28 154040.svg" alt="Halifax Airgun Club Logo" class="w-full h-full object-contain">
                     </div>
-                    <span class="text-xl font-extrabold tracking-tight">HALIFAX <span class="text-red-600">AIRGUN CLUB</span></span>
+                    <div class="flex flex-col">
+                        <span class="nav-brand text-2xl font-black leading-none tracking-tighter">HALIFAX <span class="text-red-600">AIRGUN CLUB</span></span>
+                        <span class="text-[10px] uppercase font-bold text-slate-500 tracking-[0.2em]">Est. 2013 • Professional Indoor Range</span>
+                    </div>
                 </div>
                 
-                <div class="flex flex-wrap justify-center gap-4 md:gap-6 text-sm font-bold uppercase tracking-wide">
-                    <button onclick="showTab('home')" class="tab-btn active px-1 py-2 nav-link" id="btn-home">Home</button>
-                    <button onclick="showTab('pricing')" class="tab-btn px-1 py-2 nav-link" id="btn-pricing">Pricing</button>
-                    <button onclick="showTab('hours')" class="tab-btn px-1 py-2 nav-link" id="btn-hours">Opening Hours</button>
-                    <button onclick="showTab('gallery')" class="tab-btn px-1 py-2 nav-link" id="btn-gallery">Gallery</button>
-                    <button onclick="showTab('contact')" class="tab-btn px-1 py-2 nav-link" id="btn-contact">Contact</button>
-                    <button onclick="showTab('links')" class="tab-btn px-1 py-2 nav-link" id="btn-links">Links</button>
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center space-x-8 text-sm font-bold uppercase tracking-widest">
+                    <button onclick="showTab('home')" class="nav-btn active py-2" id="btn-home">Home</button>
+                    <button onclick="showTab('pricing')" class="nav-btn py-2" id="btn-pricing">Pricing</button>
+                    <button onclick="showTab('hours')" class="nav-btn py-2" id="btn-hours">Hours</button>
+                    <button onclick="showTab('gallery')" class="nav-btn py-2" id="btn-gallery">Gallery</button>
+                    <button onclick="showTab('contact')" class="nav-btn py-2" id="btn-contact">Contact</button>
+                    <button onclick="showTab('links')" class="nav-btn py-2" id="btn-links">Links</button>
                 </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="lg:hidden text-2xl text-slate-800 focus:outline-none" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="lg:hidden bg-white border-t border-slate-100 px-4">
+            <div class="flex flex-col space-y-4 py-6 font-bold uppercase text-sm tracking-widest">
+                <button onclick="showTab('home')" class="mobile-nav-btn text-left">Home</button>
+                <button onclick="showTab('pricing')" class="mobile-nav-btn text-left">Pricing</button>
+                <button onclick="showTab('hours')" class="mobile-nav-btn text-left">Opening Hours</button>
+                <button onclick="showTab('gallery')" class="mobile-nav-btn text-left">Gallery</button>
+                <button onclick="showTab('contact')" class="mobile-nav-btn text-left">Contact</button>
+                <button onclick="showTab('links')" class="mobile-nav-btn text-left">Links</button>
             </div>
         </div>
     </nav>
 
-    <!-- Content Sections -->
-    <main class="max-w-5xl mx-auto px-4 py-8">
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 py-10">
 
         <!-- HOME TAB -->
-        <div id="home" class="tab-content active space-y-8 animate-in fade-in duration-500">
-            <!-- Header Section -->
-            <div class="section-card text-center bg-white border-t-4 border-red-600">
-                <h1 class="text-3xl font-extrabold text-blue-800 mb-4">Welcome to our site</h1>
-                <p class="text-lg text-gray-700 leading-relaxed mb-6">
-                    This is a basic introduction to Halifax Airgun Club.
-                </p>
-                <div class="grid md:grid-cols-2 gap-4 mb-8">
-                    <div class="bg-red-50 p-4 rounded-lg border border-red-100">
-                        <p class="highlight-red text-xl">There are no age restrictions as long as minors are accompanied by an adult.</p>
-                    </div>
-                    <div class="bg-red-600 p-4 rounded-lg border border-red-700 text-white flex items-center justify-center">
-                        <p class="text-xl font-bold uppercase tracking-widest">No need to book. Just walk in.</p>
+        <div id="home" class="tab-content active">
+            <!-- Hero Banner -->
+            <div class="relative rounded-2xl overflow-hidden bg-slate-900 text-white p-8 md:p-16 mb-12 shadow-2xl">
+                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1595113316349-9fa4ee24f884?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-20"></div>
+                <div class="relative z-10 max-w-2xl">
+                    <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight">Precision. Sport.<br><span class="text-red-500">Community.</span></h1>
+                    <p class="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed">
+                        West Yorkshire's premier indoor airgun facility. Two floors of dedicated target ranges catering to everyone from absolute beginners to professional marksmen.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="flex items-center bg-red-600 px-6 py-3 rounded-full font-bold uppercase tracking-tighter text-sm shadow-lg">
+                            <i class="fas fa-door-open mr-2"></i> No Booking Required
+                        </div>
+                        <div class="flex items-center bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full font-bold uppercase tracking-tighter text-sm">
+                            <i class="fas fa-user-check mr-2 text-green-400"></i> No Age Restriction*
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- About Section -->
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="section-card">
-                    <h2 class="text-xl font-bold mb-4 border-b pb-2 flex items-center">
-                        <i class="fas fa-crosshairs mr-2 text-red-600"></i> Our Ranges
-                    </h2>
-                    <p class="mb-4">Whether you have your own Airgun or would like to try one of ours, our indoor specially created ranges cater for the novice to expert alike.</p>
-                    <p class="mb-4">We have 2 floors of dedicated target shooting, which vary from 11 lanes of 10m hand cranked targets, 1 lane of 16m with electric target retrieval. 3 lanes of 39M, 2 lanes of 35m and 2 lanes of 30M. Lots of spinning and resetting targets</p>
-                    <p class="font-semibold text-blue-900">We are a non membership "club" where you pay as you go for lane hire by the time spent here.</p>
+            <!-- Features Grid -->
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center mb-6 text-xl">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Our Ranges</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        2 floors of specialized target shooting. Includes 11 lanes of 10m hand-cranked targets, electric retrieval lanes, and long-distance options up to 39m.
+                    </p>
+                    <ul class="text-xs font-bold text-slate-500 space-y-2">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i> 11x 10m Lanes</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i> 3x 39m Lanes</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i> Moving & Resetting Targets</li>
+                    </ul>
                 </div>
-                <div class="section-card">
-                    <h2 class="text-xl font-bold mb-4 border-b pb-2 flex items-center">
-                        <i class="fas fa-coffee mr-2 text-red-600"></i> Facilities
-                    </h2>
-                    <p class="mb-4">If you get thirsty or peckish, we have hot and cold drinks and snacks available.</p>
-                    <p class="mb-4">We feel that this is a unique attraction in the area which provides the Airgun owners of Calderdale and the surrounding areas with a dedicated indoor range, making target shooting an all weather all year round experience.</p>
-                    <p>We cater for the individual or groups and can offer corporate packages.</p>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6 text-xl">
+                        <i class="fas fa-gun"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">RFD Shop & Services</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        We are a licensed Registered Firearms Dealer. Visit our on-site shop for rifles, pistols, and accessories.
+                    </p>
+                    <ul class="text-xs font-bold text-slate-500 space-y-2">
+                        <li><i class="fas fa-check text-blue-500 mr-2"></i> PCP Bottle Refills</li>
+                        <li><i class="fas fa-check text-blue-500 mr-2"></i> Chronograph Testing</li>
+                        <li><i class="fas fa-check text-blue-500 mr-2"></i> Expert Technical Advice</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center mb-6 text-xl">
+                        <i class="fas fa-mug-hot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">The Club House</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        A unique all-weather attraction. Enjoy a range of hot and cold drinks and snacks while you wait or between sessions.
+                    </p>
+                    <ul class="text-xs font-bold text-slate-500 space-y-2">
+                        <li><i class="fas fa-check text-amber-500 mr-2"></i> Refreshments Available</li>
+                        <li><i class="fas fa-check text-amber-500 mr-2"></i> Group & Corporate Packages</li>
+                        <li><i class="fas fa-check text-amber-500 mr-2"></i> All-year Experience</li>
+                    </ul>
                 </div>
             </div>
 
-            <!-- Equipment Section -->
-            <div class="section-card flex flex-col md:flex-row items-center gap-8 bg-gray-50 border-l-4 border-blue-600">
-                <div class="flex-1">
-                    <h2 class="text-xl font-bold mb-4 flex items-center">
-                        <i class="fas fa-tools mr-2 text-blue-600"></i> Technical Services
-                    </h2>
-                    <p class="mb-4 italic">We also have an onsite chronograph to enable us to test any gun to make sure it conforms to the current laws.</p>
-                    <p class="mb-4 font-bold">We also have a compressor for filling PCP dive bottles, have your bottle filled while you shoot.</p>
-                    <div class="mt-4 pt-4 border-t border-gray-200">
-                        <p class="text-red-600 font-bold mb-2">We hold a current RFD license, which enables us to sell air rifles/pistols and all things related.</p>
-                        <p class="text-lg font-bold">Our on site shop is open for business. Pay us a visit</p>
-                    </div>
-                </div>
-                <div class="w-full md:w-1/3 flex justify-center">
-                    <div class="bg-white p-4 rounded shadow-inner flex flex-col items-center">
-                        <i class="fas fa-fill-drip text-5xl text-blue-500 mb-2"></i>
-                        <span class="text-xs uppercase font-bold text-gray-500">PCP Refills Available</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center py-6">
-                <p class="text-gray-600 font-medium">Please feel free to get in touch for further information. Thank you for your interest.</p>
+            <!-- Important Notice -->
+            <div class="bg-slate-900 rounded-2xl p-8 text-center border-b-8 border-red-600 shadow-xl">
+                <p class="text-slate-400 font-bold uppercase tracking-widest text-xs mb-2">Member Notice</p>
+                <h2 class="text-white text-2xl font-bold mb-4 italic leading-relaxed">
+                    "We are a non-membership club where you pay as you go for lane hire."
+                </h2>
+                <div class="h-1 w-20 bg-red-600 mx-auto rounded-full"></div>
             </div>
         </div>
 
         <!-- PRICING TAB -->
-        <div id="pricing" class="tab-content space-y-6">
-            <div class="section-card bg-white">
-                <h1 class="text-2xl font-extrabold text-center mb-8 border-b-2 border-red-600 pb-2 uppercase tracking-tighter">Pay As You Go</h1>
-                
-                <div class="grid gap-6">
-                    <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
-                        <span class="font-bold text-lg">Standard Lane Hire</span>
-                        <div class="text-right">
-                            <span class="block font-extrabold text-2xl text-red-600">£9.00</span>
-                            <span class="text-xs text-gray-500 font-bold">PER HOUR</span>
-                        </div>
-                    </div>
+        <div id="pricing" class="tab-content">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-black mb-4">Simple, Fair Pricing</h2>
+                <p class="text-slate-500 max-w-xl mx-auto">Access West Yorkshire's best indoor ranges with our flexible pay-as-you-go system. No hidden fees or membership requirements.</p>
+            </div>
 
-                    <div class="flex justify-between items-center p-4 bg-blue-50 rounded-lg border border-blue-100">
-                        <span class="font-bold text-lg">Single Occupancy Stay</span>
-                        <div class="text-right">
-                            <span class="block font-extrabold text-2xl text-blue-700">£14.50</span>
-                            <span class="text-xs text-blue-500 font-bold uppercase">Stay as long as you want*</span>
-                        </div>
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <!-- Hourly -->
+                <div class="bg-white p-8 rounded-3xl border border-slate-200 pricing-card transition-all">
+                    <span class="text-xs font-black uppercase tracking-widest text-slate-400">Basic Access</span>
+                    <h3 class="text-2xl font-bold mt-2 mb-6">Standard Lane</h3>
+                    <div class="flex items-baseline mb-6">
+                        <span class="text-4xl font-black text-slate-900">£9.00</span>
+                        <span class="text-slate-400 font-bold ml-2">/hour</span>
                     </div>
-
-                    <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
-                        <span class="font-bold">Gun Hire (includes pellets & targets)</span>
-                        <div class="text-right">
-                            <span class="block font-extrabold text-xl text-red-600">£20.00</span>
-                            <span class="text-xs text-gray-500 font-bold uppercase">PER HOUR</span>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
-                        <span class="font-bold">Unlimited PCP Air Refills</span>
-                        <div class="text-right font-extrabold text-xl">£2.00</div>
-                    </div>
-
-                    <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg border border-gray-100">
-                        <span class="font-bold">Paper Targets (for hand cranked lanes)</span>
-                        <div class="text-right font-extrabold text-xl">£1.50 <span class="text-sm font-normal text-gray-500">FOR 10</span></div>
-                    </div>
+                    <ul class="space-y-4 mb-8 text-sm font-medium text-slate-600">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i> Own gun usage</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i> Access to all ranges</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i> Expert lane support</li>
+                    </ul>
+                    <button onclick="showTab('hours')" class="w-full py-4 bg-slate-100 text-slate-900 rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-slate-200 transition">Check Hours</button>
                 </div>
 
-                <div class="mt-8 p-4 bg-yellow-50 rounded text-sm space-y-2 border-l-4 border-yellow-400">
-                    <p>* Stay as long as you want with your own gun.</p>
-                    <p>There are other pricing structures in place for shared occupancy and shared guns, please call for details.</p>
-                    <p>Gun hire longer by agreement.</p>
-                    <p>We have a variety of rifles to choose from.</p>
-                    <p>Group discounts will be available and could be accommodated during daytime hours if necessary.</p>
-                    <p>We also cater for birthday parties, corporate events, group bookings. Please call for details.</p>
-                    <p class="font-bold">Gift vouchers are also available.</p>
+                <!-- Stay All Day -->
+                <div class="bg-slate-900 p-8 rounded-3xl border-4 border-red-600 pricing-card transition-all transform scale-105 shadow-2xl relative">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-red-600 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Most Popular</div>
+                    <span class="text-xs font-black uppercase tracking-widest text-slate-500">Unlimited Experience</span>
+                    <h3 class="text-2xl font-bold mt-2 mb-6 text-white">Full Stay Access</h3>
+                    <div class="flex items-baseline mb-6">
+                        <span class="text-5xl font-black text-white">£14.50</span>
+                        <span class="text-slate-400 font-bold ml-2">/session</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 text-sm font-medium text-slate-300">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Own gun usage</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> No time limits*</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Switch between floors</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-3"></i> Priority lane access</li>
+                    </ul>
+                    <button onclick="showTab('contact')" class="w-full py-4 bg-red-600 text-white rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-red-700 transition shadow-lg shadow-red-900/50">Visit Us Now</button>
+                </div>
+
+                <!-- Gun Hire -->
+                <div class="bg-white p-8 rounded-3xl border border-slate-200 pricing-card transition-all">
+                    <span class="text-xs font-black uppercase tracking-widest text-slate-400">Total Package</span>
+                    <h3 class="text-2xl font-bold mt-2 mb-6">Full Gun Hire</h3>
+                    <div class="flex items-baseline mb-6">
+                        <span class="text-4xl font-black text-slate-900">£20.00</span>
+                        <span class="text-slate-400 font-bold ml-2">/hour</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 text-sm font-medium text-slate-600">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i> Premium Rifle Hire</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i> Pellets included</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i> Paper targets included</li>
+                    </ul>
+                    <button onclick="showTab('contact')" class="w-full py-4 bg-slate-100 text-slate-900 rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-slate-200 transition">Call to Enquire</button>
+                </div>
+            </div>
+
+            <!-- Additional Pricing Details -->
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-slate-50 p-4 rounded-xl flex justify-between items-center border border-slate-100">
+                    <span class="font-bold text-slate-700">Unlimited PCP Air Refills</span>
+                    <span class="bg-white px-3 py-1 rounded-lg border font-black text-red-600">£2.00</span>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl flex justify-between items-center border border-slate-100">
+                    <span class="font-bold text-slate-700">Paper Targets (Pack of 10)</span>
+                    <span class="bg-white px-3 py-1 rounded-lg border font-black text-red-600">£1.50</span>
+                </div>
+            </div>
+            
+            <div class="mt-8 p-6 bg-amber-50 rounded-2xl border border-amber-100 text-xs text-amber-800 leading-relaxed">
+                <div class="flex gap-4">
+                    <i class="fas fa-info-circle text-amber-500 text-xl"></i>
+                    <div class="space-y-2">
+                        <p class="font-bold">TERMS & DETAILS:</p>
+                        <p>• "Stay as long as you want" applies to users with their own guns during standard business hours.</p>
+                        <p>• We offer specialized rates for shared occupancy and shared guns—please call for custom quotes.</p>
+                        <p>• Birthday parties, corporate events, and group bookings can be accommodated (daytime slots available).</p>
+                        <p>• Gift Vouchers available on-site.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- HOURS TAB -->
         <div id="hours" class="tab-content">
-            <div class="section-card max-w-2xl mx-auto">
-                <h1 class="text-2xl font-extrabold text-center text-red-600 mb-8 uppercase italic">Opening hours</h1>
-                
-                <div class="divide-y divide-gray-100 mb-8">
-                    <div class="flex justify-between py-3">
-                        <span class="font-bold">Monday, Tuesday, Thursday</span>
-                        <span class="font-bold text-blue-800">12.00pm to 9.00pm</span>
-                    </div>
-                    <div class="flex justify-between py-3 bg-red-50 px-2 rounded">
-                        <span class="font-bold text-red-600">Wednesday</span>
-                        <span class="font-bold text-red-600">CLOSED</span>
-                    </div>
-                    <div class="flex justify-between py-3">
-                        <span class="font-bold">Friday</span>
-                        <span class="font-bold text-blue-800">9.00am - 6.00pm</span>
-                    </div>
-                    <div class="flex justify-between py-3">
-                        <span class="font-bold">Saturday - Sunday</span>
-                        <span class="font-bold text-blue-800">8.30am - 5.00pm</span>
+            <div class="max-w-3xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-black mb-2">Opening Hours</h2>
+                    <div id="status-badge-large" class="inline-block px-4 py-2 rounded-full font-bold uppercase tracking-widest text-sm shadow-sm mt-4">
+                        <!-- Loaded via JS -->
+                        Checking current status...
                     </div>
                 </div>
 
-                <div class="text-center space-y-4">
-                    <p class="font-bold">Bank Holidays open as usual unless indicated here.</p>
-                    
-                    <div class="bg-green-50 p-4 rounded-lg border border-green-200">
-                        <p class="text-green-600 font-extrabold uppercase text-xs mb-1">Status Update</p>
-                        <p class="text-green-700 font-bold">ALL OTHER DAYS AS NORMAL APART FROM THE FOLLOWING DAYS WHEN WE ARE CLOSED</p>
-                        <p class="text-blue-700 font-extrabold uppercase mt-2">CHRISTMAS DAY, BOXING DAY, NEW YEARS DAY</p>
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
+                    <div id="schedule-list" class="divide-y divide-slate-50">
+                        <!-- Day rows loaded via JS for active highlighting -->
                     </div>
+                </div>
 
-                    <div class="bg-gray-100 p-4 rounded italic text-sm">
-                        <p class="mb-2">Last entry to the club must be 10 minutes before the last hour</p>
-                        <p>If no one is in the club with the last hour to go, we do tend to lock up</p>
-                        <p class="font-bold mt-2">Thank you</p>
+                <!-- Seasonal/Holiday Notice -->
+                <div class="mt-8 space-y-4">
+                    <div class="bg-red-50 p-6 rounded-2xl border border-red-100 text-center">
+                        <h4 class="text-red-700 font-bold uppercase tracking-widest text-sm mb-2">Closed Days</h4>
+                        <p class="text-red-900 font-black text-lg uppercase italic">Christmas Day, Boxing Day, New Years Day</p>
                     </div>
                     
-                    <div class="pt-4">
-                         <div class="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded font-black text-xl shadow-lg transform -rotate-2">
-                             WE'RE OPEN
-                         </div>
+                    <div class="bg-slate-900 p-6 rounded-2xl text-slate-300 text-sm text-center">
+                        <p class="italic mb-2 text-slate-400">Last entry is 10 minutes before the final hour of trade.</p>
+                        <p class="font-bold text-white uppercase tracking-tighter">If the range is empty during the final hour, we may lock up early. Thank you for understanding.</p>
                     </div>
                 </div>
             </div>
@@ -257,60 +353,126 @@
 
         <!-- GALLERY TAB -->
         <div id="gallery" class="tab-content">
-            <div class="section-card text-center py-20">
-                <div class="mb-6">
-                    <i class="fas fa-camera-retro text-6xl text-gray-300"></i>
+            <div class="bg-white rounded-3xl p-12 text-center border-2 border-dashed border-slate-200">
+                <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-300 text-3xl">
+                    <i class="fas fa-hammer"></i>
                 </div>
-                <h2 class="text-2xl font-bold mb-4">After extensive refurbishment</h2>
-                <p class="text-xl text-gray-600 mb-8">New photographs will be posted shortly</p>
-                <p class="font-bold text-gray-500 uppercase tracking-widest">Thank you</p>
+                <h2 class="text-3xl font-black mb-4 uppercase">Range Under Refurbishment</h2>
+                <p class="text-slate-500 max-w-lg mx-auto mb-8">We've been hard at work upgrading our facilities to provide the best shooting experience in the region. New professional photography of our renovated 16m and 39m ranges will be posted shortly.</p>
+                <div class="flex justify-center gap-4">
+                    <span class="px-6 py-2 bg-slate-100 rounded-full text-xs font-bold text-slate-500 uppercase tracking-widest">Coming Soon</span>
+                </div>
             </div>
         </div>
 
         <!-- CONTACT TAB -->
-        <div id="contact" class="tab-content max-w-lg mx-auto">
-            <div class="section-card text-center">
-                <h1 class="text-2xl font-bold mb-6 text-blue-900 uppercase">Contact details</h1>
-                
-                <div class="space-y-6">
+        <div id="contact" class="tab-content">
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <div class="space-y-8">
                     <div>
-                        <p class="text-xl font-extrabold">John Taylor</p>
-                        <p class="text-gray-600">15a Phoebe Lane Industrial Estate</p>
-                        <p class="text-gray-600">Phoebe Lane, Halifax</p>
-                        <p class="text-gray-600">HX3 9EX</p>
+                        <h2 class="text-4xl font-black mb-4 uppercase">Get in Touch</h2>
+                        <p class="text-slate-500 leading-relaxed">Whether you have technical questions about your airgun or want to organize a group event, we're here to help.</p>
                     </div>
 
-                    <div class="flex flex-col items-center space-y-2">
-                        <a href="tel:01422365529" class="text-blue-600 font-bold text-lg hover:underline"><i class="fas fa-phone mr-2"></i>01422 365529</a>
-                        <a href="tel:07721758386" class="text-blue-600 font-bold text-lg hover:underline"><i class="fas fa-mobile-alt mr-2"></i>07721 758386</a>
-                        <a href="mailto:john@halifaxairgunclub.co.uk" class="text-red-600 font-bold hover:underline underline"><i class="fas fa-envelope mr-2"></i>john@halifaxairgunclub.co.uk</a>
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center shrink-0">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 uppercase text-xs tracking-widest mb-1">Our Location</h4>
+                                <p class="text-slate-600 font-medium">15a Phoebe Lane Industrial Estate</p>
+                                <p class="text-slate-600 font-medium">Phoebe Lane, Halifax, HX3 9EX</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center shrink-0">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 uppercase text-xs tracking-widest mb-1">Phone Numbers</h4>
+                                <a href="tel:01422365529" class="block text-slate-800 font-bold hover:text-blue-600">01422 365529 (Landline)</a>
+                                <a href="tel:07721758386" class="block text-slate-800 font-bold hover:text-blue-600">07721 758386 (Mobile)</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center shrink-0">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 uppercase text-xs tracking-widest mb-1">Email Address</h4>
+                                <a href="mailto:john@halifaxairgunclub.co.uk" class="text-slate-800 font-bold hover:text-green-600">john@halifaxairgunclub.co.uk</a>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="pt-6 border-t border-gray-100">
-                        <p class="text-red-600 font-bold mb-4 italic">Please click the link below for a location map</p>
-                        <a href="http://www.streetmap.co.uk/map.srf?X=409697&Y=423864&A=Y&Z=110" target="_blank" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-bold hover:bg-blue-700 transition shadow-lg">
-                            <i class="fas fa-map-marked-alt mr-2"></i> View Location Map
+                    <div class="pt-6">
+                        <a href="http://www.streetmap.co.uk/map.srf?X=409697&Y=423864&A=Y&Z=110" target="_blank" class="inline-flex items-center px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-slate-800 transition shadow-xl">
+                            <i class="fas fa-location-arrow mr-3 text-red-500"></i> Open Location Map
                         </a>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+                    <h3 class="text-xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-id-badge mr-3 text-red-600"></i> Range Lead
+                    </h3>
+                    <div class="flex items-center gap-6 mb-8">
+                        <div class="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-400 text-3xl">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-black text-slate-900 uppercase">John Taylor</p>
+                            <p class="text-sm font-bold text-slate-500 uppercase tracking-widest">Club Proprietor & RFD</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <p class="text-sm text-slate-600 leading-relaxed italic">"We've built this club to provide a safe, welcoming, and high-spec environment for enthusiasts of all ages. Whether it's your first time or you're a seasoned veteran, our ranges are here for you."</p>
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex items-center gap-3">
+                            <i class="fas fa-shield-alt text-green-600"></i>
+                            <span class="text-[10px] font-black uppercase text-slate-500 tracking-wider">Fully Licensed & Insured RFD Facility</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- LINKS TAB -->
-        <div id="links" class="tab-content max-w-2xl mx-auto">
-            <div class="section-card">
-                <h1 class="text-2xl font-bold mb-8 text-center border-b pb-4 uppercase">Links & Partners</h1>
-                
-                <div class="grid gap-4 text-center">
-                    <a href="http://www.taylormadesafety.co.uk" target="_blank" class="p-4 bg-gray-50 rounded border hover:border-blue-500 hover:text-blue-600 font-bold transition">www.taylormadesafety.co.uk</a>
-                    <a href="http://www.liquidsteeldesigns.co.uk" target="_blank" class="p-4 bg-gray-50 rounded border hover:border-blue-500 hover:text-blue-600 font-bold transition">www.liquidsteeldesigns.co.uk</a>
-                    <a href="https://www.kirklees-guns.co.uk/" target="_blank" class="p-4 bg-gray-50 rounded border hover:border-blue-500 hover:text-blue-600 font-bold transition">https://www.kirklees-guns.co.uk/</a>
-                    <a href="https://www.yorkshiretimbermerchants.co.uk/" target="_blank" class="p-4 bg-gray-50 rounded border hover:border-blue-500 hover:text-blue-600 font-bold transition">https://www.yorkshiretimbermerchants.co.uk/</a>
-                </div>
+        <div id="links" class="tab-content">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-black mb-4 uppercase">Partners & Links</h2>
+                <p class="text-slate-500">We work with local businesses and industry partners to improve our sport.</p>
+            </div>
 
-                <div class="mt-12 bg-red-50 p-6 rounded-xl border border-red-100 text-center">
-                    <p class="text-red-600 font-bold mb-4 leading-relaxed">
-                        We'd also like to give a big thank you to Yorkshire Timber, who very kindly donated the materials which enabled us to build the brand new 16m range during lockdown. In those and these difficult times it was a very appreciated helping hand.
+            <div class="grid md:grid-cols-2 gap-4 mb-12">
+                <a href="http://www.taylormadesafety.co.uk" target="_blank" class="p-6 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between hover:border-red-500 transition group">
+                    <span class="font-bold text-slate-700">Taylor Made Safety</span>
+                    <i class="fas fa-external-link-alt text-slate-300 group-hover:text-red-500 transition"></i>
+                </a>
+                <a href="http://www.liquidsteeldesigns.co.uk" target="_blank" class="p-6 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between hover:border-red-500 transition group">
+                    <span class="font-bold text-slate-700">Liquid Steel Designs</span>
+                    <i class="fas fa-external-link-alt text-slate-300 group-hover:text-red-500 transition"></i>
+                </a>
+                <a href="https://www.kirklees-guns.co.uk/" target="_blank" class="p-6 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between hover:border-red-500 transition group">
+                    <span class="font-bold text-slate-700">Kirklees Guns</span>
+                    <i class="fas fa-external-link-alt text-slate-300 group-hover:text-red-500 transition"></i>
+                </a>
+                <a href="https://www.yorkshiretimbermerchants.co.uk/" target="_blank" class="p-6 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between hover:border-red-500 transition group">
+                    <span class="font-bold text-slate-700">Yorkshire Timber Merchants</span>
+                    <i class="fas fa-external-link-alt text-slate-300 group-hover:text-red-500 transition"></i>
+                </a>
+            </div>
+
+            <div class="bg-green-700 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-2xl">
+                <div class="absolute top-0 right-0 p-8 text-green-600 opacity-20 text-9xl">
+                    <i class="fas fa-tree"></i>
+                </div>
+                <div class="relative z-10">
+                    <h3 class="text-2xl font-black mb-4 uppercase">A Special Thank You</h3>
+                    <p class="text-lg text-green-100 max-w-3xl leading-relaxed">
+                        We'd like to extend our sincerest gratitude to <span class="font-black text-white">Yorkshire Timber</span>, who very kindly donated the materials which enabled us to build the brand new 16m range during the lockdown periods. In those difficult times, it was a very appreciated helping hand that allowed us to improve the club for all our members.
                     </p>
                 </div>
             </div>
@@ -319,38 +481,164 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <div class="flex justify-center space-x-6 mb-8">
-                <a href="#" class="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-blue-800 text-2xl hover:scale-110 transition"><i class="fab fa-facebook"></i></a>
-                <a href="#" class="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-blue-400 text-2xl hover:scale-110 transition"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-blue-700 text-2xl hover:scale-110 transition"><i class="fab fa-linkedin"></i></a>
+    <footer class="bg-slate-900 text-white pt-20 pb-10">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-12 mb-16">
+                <div class="col-span-2">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <!-- Footer Logo Replacement -->
+                        <div class="w-12 h-12">
+                             <img src="Screenshot 2026-03-28 154040.svg" alt="Halifax Airgun Club Logo" class="w-full h-full object-contain brightness-0 invert">
+                        </div>
+                        <span class="nav-brand text-2xl font-black tracking-tighter">HALIFAX <span class="text-red-600">AIRGUN CLUB</span></span>
+                    </div>
+                    <p class="text-slate-400 text-sm max-w-sm leading-relaxed mb-6">
+                        Providing West Yorkshire with a dedicated, professional indoor shooting environment for over a decade. All weather, all skill levels, all year round.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center text-slate-400 hover:bg-blue-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold uppercase tracking-widest text-xs mb-6 text-red-500">Navigation</h4>
+                    <ul class="space-y-4 text-sm font-medium text-slate-400">
+                        <li><button onclick="showTab('home')" class="hover:text-white transition">Home</button></li>
+                        <li><button onclick="showTab('pricing')" class="hover:text-white transition">Pricing & Hire</button></li>
+                        <li><button onclick="showTab('hours')" class="hover:text-white transition">Opening Hours</button></li>
+                        <li><button onclick="showTab('contact')" class="hover:text-white transition">Contact Us</button></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold uppercase tracking-widest text-xs mb-6 text-red-500">Legal</h4>
+                    <ul class="space-y-4 text-sm font-medium text-slate-400">
+                        <li>RFD License: Halifax Airgun Club</li>
+                        <li>Minors must be accompanied by an adult</li>
+                        <li>Safety induction required for new shooters</li>
+                    </ul>
+                </div>
             </div>
-            <div class="border-t border-gray-700 pt-8 mt-8">
-                <p class="text-gray-400 text-sm">&copy; Copyright Halifax Airgun Club Ltd 2013 - 2024</p>
+
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">&copy; 2013 - 2024 Halifax Airgun Club Ltd. All Rights Reserved.</p>
+                <div class="flex items-center gap-2">
+                    <span class="text-[10px] font-black text-slate-600 uppercase tracking-tighter">Safe • Professional • Licensed</span>
+                </div>
             </div>
         </div>
     </footer>
 
     <script>
+        const openingHours = {
+            1: { name: 'Monday', open: 12, close: 21 },
+            2: { name: 'Tuesday', open: 12, close: 21 },
+            3: { name: 'Wednesday', open: 0, close: 0, closed: true },
+            4: { name: 'Thursday', open: 12, close: 21 },
+            5: { name: 'Friday', open: 9, close: 18 },
+            6: { name: 'Saturday', open: 8.5, close: 17 },
+            0: { name: 'Sunday', open: 8.5, close: 17 }
+        };
+
+        function checkStatus() {
+            const now = new Date();
+            const day = now.getDay();
+            const hour = now.getHours() + now.getMinutes() / 60;
+            const config = openingHours[day];
+
+            let isOpen = false;
+            if (!config.closed) {
+                if (hour >= config.open && hour < config.close) {
+                    isOpen = true;
+                }
+            }
+
+            // Update UI elements
+            const headerStatus = document.getElementById('live-status-header');
+            const largeStatus = document.getElementById('status-badge-large');
+
+            if (isOpen) {
+                const closeTime = formatTime(config.close);
+                headerStatus.innerHTML = `<span class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-2 status-pulse"></span>OPEN NOW • UNTIL ${closeTime}</span>`;
+                largeStatus.className = "inline-block px-6 py-3 rounded-full font-black uppercase tracking-widest text-sm bg-green-100 text-green-700 shadow-sm mt-4 border border-green-200";
+                largeStatus.innerHTML = `<i class="fas fa-circle text-[10px] mr-2 status-pulse"></i> Open Now • Closing at ${closeTime}`;
+            } else {
+                headerStatus.innerHTML = `<span class="flex items-center text-slate-400 font-bold"><span class="w-2 h-2 bg-red-500 rounded-full mr-2"></span>CURRENTLY CLOSED</span>`;
+                largeStatus.className = "inline-block px-6 py-3 rounded-full font-black uppercase tracking-widest text-sm bg-red-100 text-red-700 shadow-sm mt-4 border border-red-200";
+                largeStatus.innerHTML = `<i class="fas fa-moon mr-2"></i> Currently Closed`;
+            }
+
+            renderSchedule(day);
+        }
+
+        function formatTime(decimalHour) {
+            const h = Math.floor(decimalHour);
+            const m = (decimalHour - h) * 60;
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            const displayH = h % 12 || 12;
+            const displayM = m === 0 ? '00' : m.toString().padStart(2, '0');
+            return `${displayH}:${displayM}${ampm}`;
+        }
+
+        function renderSchedule(currentDay) {
+            const container = document.getElementById('schedule-list');
+            container.innerHTML = '';
+            
+            // Order it starting from Monday (1) to Sunday (0)
+            const order = [1, 2, 3, 4, 5, 6, 0];
+            
+            order.forEach(dayIndex => {
+                const config = openingHours[dayIndex];
+                const isActive = dayIndex === currentDay;
+                
+                const row = document.createElement('div');
+                row.className = `flex justify-between items-center p-6 ${isActive ? 'bg-slate-50 border-l-4 border-red-600' : ''}`;
+                
+                let timeStr = config.closed ? 
+                    '<span class="text-red-600 font-black italic">CLOSED</span>' : 
+                    `<span class="text-slate-900 font-bold">${formatTime(config.open)} — ${formatTime(config.close)}</span>`;
+
+                row.innerHTML = `
+                    <span class="font-black uppercase tracking-widest text-xs ${isActive ? 'text-red-600' : 'text-slate-500'}">
+                        ${config.name} ${isActive ? '<span class="ml-2 text-[10px] bg-red-600 text-white px-2 py-0.5 rounded-full">Today</span>' : ''}
+                    </span>
+                    ${timeStr}
+                `;
+                container.appendChild(row);
+            });
+        }
+
         function showTab(tabId) {
-            // Hide all tabs
+            // Mobile menu close if open
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.remove('open');
+
+            // Logic to switch tabs
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
-            // Deactivate all buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             
-            // Show selected tab
             document.getElementById(tabId).classList.add('active');
-            // Activate button
-            document.getElementById('btn-' + tabId).classList.add('active');
+            const btn = document.getElementById('btn-' + tabId);
+            if(btn) btn.classList.add('active');
 
-            // Smooth scroll to top of content
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('open');
+        }
+
+        // Initialize
+        window.onload = () => {
+            checkStatus();
+            // Refresh status every minute
+            setInterval(checkStatus, 60000);
+        };
     </script>
 </body>
 </html>
